@@ -106,34 +106,42 @@ def apply_custom_design():
     st.markdown("""
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Mengatur Header agar transparan tapi tetap menampilkan tombol navigasi (>>) */
+        /* 1. Mengatur Header agar tetap ada (untuk tombol >>) tapi tanpa ruang kosong */
         header[data-testid="stHeader"] {
             background-color: transparent !important;
-            color: #1e293b !important;
+            height: 2.5rem !important; /* Perkecil tinggi header */
         }
         
-        /* Menyembunyikan dekorasi garis warna di paling atas */
         div[data-testid="stDecoration"] {
             display: none !important;
         }
 
-        /* Background Aplikasi */
+        /* 2. Background Aplikasi */
         .stApp { background-color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; }
 
-        /* Menyesuaikan konten agar mepet ke atas tanpa menabrak navigasi */
+        /* 3. TARIK KONTEN KE ATAS (DESKTOP) */
         .main .block-container {
-            padding-top: 1rem !important;
-            margin-top: -3rem !important; 
+            padding-top: 0rem !important;
+            margin-top: -5rem !important; 
             max-width: 1000px;
         }
 
-        /* Merapikan Sidebar */
-        section[data-testid="stSidebar"] { 
-            background-color: white !important; 
-            border-right: 1px solid #e2e8f0; 
+        /* 4. KHUSUS TAMPILAN HP (MOBILE FIX) */
+        @media (max-width: 768px) {
+            .main .block-container {
+                margin-top: -8.5rem !important; /* Tarikan lebih kuat di HP agar mepet */
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            .wallet-card {
+                padding: 1.5rem !important; /* Kecilkan sedikit card saldo di HP */
+            }
+            h1 {
+                font-size: 2.2rem !important; /* Sesuaikan ukuran font saldo di HP */
+            }
         }
 
-        /* Gaya Kartu Saldo */
+        /* 5. GAYA KARTU SALDO */
         .wallet-card {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             padding: 2.2rem;
@@ -150,9 +158,11 @@ def apply_custom_design():
             margin-bottom: 0.8rem;
         }
 
-        /* Gaya Tombol */
-        .stButton>button { border-radius: 12px !important; font-weight: 700 !important; }
-        div[data-testid="stButton"] button[kind="primary"] { background: #10b981 !important; color: white !important; }
+        /* Sidebar Styling */
+        section[data-testid="stSidebar"] { 
+            background-color: white !important; 
+            border-right: 1px solid #e2e8f0; 
+        }
 
         /* Metric Box */
         div[data-testid="stMetric"] {
@@ -293,3 +303,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
