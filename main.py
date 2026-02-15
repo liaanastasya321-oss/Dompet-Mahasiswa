@@ -101,38 +101,45 @@ def update_status_hutang(username, nama_org, nominal, status_baru):
             return True
     return False
 
-# --- 3. CSS REVOLUTION (VERSION: ULTRA TIGHT & JINAK) ---
+# --- 3. CSS MODERN (FIX TOMBOL NAVIGASI SIDEBAR) ---
 def apply_custom_design():
     st.markdown("""
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* 1. MENGHILANGKAN HEADER & DEKORASI */
-        header, [data-testid="stHeader"], [data-testid="stDecoration"], [data-testid="stToolbar"] {
+        /* Mengatur Header agar transparan tapi tetap menampilkan tombol navigasi (>>) */
+        header[data-testid="stHeader"] {
+            background-color: transparent !important;
+            color: #1e293b !important;
+        }
+        
+        /* Menyembunyikan dekorasi garis warna di paling atas */
+        div[data-testid="stDecoration"] {
             display: none !important;
-            height: 0px !important;
         }
 
-        /* 2. BACKGROUND & FONT */
+        /* Background Aplikasi */
         .stApp { background-color: #f8fafc; font-family: 'Plus Jakarta Sans', sans-serif; }
 
-        /* 3. PAKSA KONTEN MENEMPEL KE ATAS */
+        /* Menyesuaikan konten agar mepet ke atas tanpa menabrak navigasi */
         .main .block-container {
-            padding-top: 0rem !important;
-            margin-top: -7rem !important; 
+            padding-top: 1rem !important;
+            margin-top: -3rem !important; 
             max-width: 1000px;
         }
 
-        /* 4. RESET GAP */
-        [data-testid="stVerticalBlock"] { gap: 0px !important; }
+        /* Merapikan Sidebar */
+        section[data-testid="stSidebar"] { 
+            background-color: white !important; 
+            border-right: 1px solid #e2e8f0; 
+        }
 
-        /* 5. GAYA KARTU MODERN */
+        /* Gaya Kartu Saldo */
         .wallet-card {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            padding: 2rem;
+            padding: 2.2rem;
             border-radius: 25px;
             color: white;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            margin-top: 10px;
             margin-bottom: 1.5rem;
         }
 
@@ -140,16 +147,14 @@ def apply_custom_design():
             font-size: 1.4rem;
             font-weight: 800;
             color: #1e293b;
-            margin-top: 0px !important;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
         }
 
-        /* 6. SIDEBAR & BUTTON */
-        section[data-testid="stSidebar"] { background-color: white !important; border-right: 1px solid #e2e8f0; }
+        /* Gaya Tombol */
         .stButton>button { border-radius: 12px !important; font-weight: 700 !important; }
         div[data-testid="stButton"] button[kind="primary"] { background: #10b981 !important; color: white !important; }
 
-        /* 7. METRIC BOX */
+        /* Metric Box */
         div[data-testid="stMetric"] {
             background: white;
             padding: 15px !important;
@@ -181,9 +186,9 @@ def main():
                         st.rerun()
                     else: st.error("Akses Ditolak.")
             with t_reg:
-                new_u = st.text_input("Username Baru")
-                new_p = st.text_input("Password Baru", type="password")
-                new_n = st.text_input("Nama Lengkap")
+                new_u = st.text_input("Username Baru", key="reg_u")
+                new_p = st.text_input("Password Baru", type="password", key="reg_p")
+                new_n = st.text_input("Nama Lengkap", key="reg_n")
                 if st.button("Daftar Sekarang ✨", use_container_width=True):
                     if register_user(new_u, new_p, new_n):
                         st.success("Berhasil! Silakan Masuk.")
@@ -195,12 +200,13 @@ def main():
             st.markdown(f"### 💰 DompetKu")
             st.write(f"Halo, **{st.session_state['nama']}**!")
             st.divider()
-            selected = st.radio("MENU", ["🏠 Dashboard", "📝 Catat Baru", "📂 Riwayat Data", "🎯 Celengan", "🤝 Hutang"], label_visibility="collapsed")
+            # Gunakan key agar navigasi stabil saat pindah menu
+            selected = st.radio("MENU", ["🏠 Dashboard", "📝 Catat Baru", "📂 Riwayat Data", "🎯 Celengan", "🤝 Hutang"], label_visibility="collapsed", key="nav_menu")
             if st.button("🚪 Logout", use_container_width=True):
                 st.session_state['status_login'] = False
                 st.rerun()
 
-        # --- LOGIKA RENDER MENU (DENGAN CSS JINAK) ---
+        # --- LOGIKA RENDER MENU ---
         if selected == "🏠 Dashboard":
             st.markdown('<div class="section-title">📊 Dashboard</div>', unsafe_allow_html=True)
             df = ambil_data(st.session_state['user'])
@@ -282,6 +288,7 @@ def main():
                             if "Belum" in r['status'] and c_b.button("Lunas ✅", key=f"h_lns_{i}"):
                                 update_status_hutang(st.session_state['user'], r['nama_orang'], r['nominal'], "Lunas ✅")
                                 st.rerun()
+                            st.divider()
                 else: st.info("Kosong.")
 
 if __name__ == "__main__":
