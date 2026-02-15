@@ -7,7 +7,7 @@ import time
 
 # --- 1. KONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="Dompet Mhs Pro",
+    page_title="Dompet Mahasiswa",
     page_icon="💳",
     layout="wide", 
     initial_sidebar_state="expanded"
@@ -184,7 +184,7 @@ def main():
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             st.markdown("<div style='text-align: center; margin-top: 100px;'>", unsafe_allow_html=True)
-            st.markdown("<h1 style='color: #0f172a; font-weight: 800;'>💳 Wallet Mhs Pro</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 style='color: #0f172a; font-weight: 800;'>💳 Wallet Mahasiswa</h1>", unsafe_allow_html=True)
             t_log, t_reg = st.tabs(["🔐 Masuk", "✨ Daftar"])
             with t_log:
                 u = st.text_input("Username", key="u_log")
@@ -303,4 +303,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
